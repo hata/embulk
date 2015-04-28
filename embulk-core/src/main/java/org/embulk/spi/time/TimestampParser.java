@@ -18,6 +18,10 @@ public class TimestampParser
         @ConfigDefault("\"UTC\"")
         public DateTimeZone getDefaultTimeZone();
 
+        @Config("locale")
+        @ConfigDefault("\"\"")
+        public String getLocale();
+
         @ConfigInject
         public ScriptingContainer getJRuby();
     }
@@ -58,5 +62,10 @@ public class TimestampParser
         long sec = timeZone.convertLocalToUTC(localSec*1000, false) / 1000;
 
         return Timestamp.ofEpochSecond(sec, usec * 1000);
+    }
+
+    DateTimeZone getDefaultTimeZone()
+    {
+        return defaultTimeZone;
     }
 }

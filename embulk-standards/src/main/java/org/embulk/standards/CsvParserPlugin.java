@@ -11,6 +11,7 @@ import org.embulk.config.TaskSource;
 import org.embulk.spi.type.TimestampType;
 import org.embulk.spi.time.TimestampParser;
 import org.embulk.spi.time.TimestampParseException;
+import org.embulk.spi.time.TimestampParserFactory;
 import org.embulk.spi.Column;
 import org.embulk.spi.Schema;
 import org.embulk.spi.SchemaConfig;
@@ -110,11 +111,12 @@ public class CsvParserPlugin
     private TimestampParser[] newTimestampParsers(
             TimestampParser.ParserTask task, Schema schema)
     {
+        TimestampParserFactory factory = new TimestampParserFactory();
         TimestampParser[] parsers = new TimestampParser[schema.getColumnCount()];
         for (Column column : schema.getColumns()) {
             if (column.getType() instanceof TimestampType) {
                 TimestampType tt = (TimestampType) column.getType();
-                parsers[column.getIndex()] = new TimestampParser(tt.getFormat(), task);
+                parsers[column.getIndex()] = factory.newInstance(tt.getFormat(), task);
             }
         }
         return parsers;

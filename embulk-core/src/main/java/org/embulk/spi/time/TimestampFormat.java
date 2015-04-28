@@ -33,7 +33,7 @@ public class TimestampFormat
 
     public TimestampParser newParser(TimestampParser.ParserTask task)
     {
-        return new TimestampParser(format, task);
+        return new TimestampParserFactory().newInstance(format, task);
     }
 
     private static Set<String> availableTimeZoneNames = ImmutableSet.copyOf(DateTimeZone.getAvailableIDs());
